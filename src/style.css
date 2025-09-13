@@ -30,6 +30,14 @@ body {
   min-height: 100vh;
 }
 
+style {
+  /* 任意: 細いスクロールバー */
+.scroll-thin { scrollbar-width: thin; scrollbar-color: #3f3f46 transparent; }
+.scroll-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 8px; }
+.scroll-thin::-webkit-scrollbar-track { background: transparent; }
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -94,3 +102,11 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* 画面幅制限を解除する（Viteテンプレの #root 上書き） */
+html, body, #root, #app { height: 100%; }
+#root, #app {
+  max-width: none;   /* ← これで1280px制限を解除 */
+  margin: 0;         /* 中央寄せ解除 */
+  padding: 0;        /* 余白なし */
+}
+body { margin: 0; }  /* 念のため */
