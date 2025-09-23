@@ -552,20 +552,6 @@ const BASE_OFFSET: Record<Stage, Offset> = {
     localStorage.setItem(PET_IMAGE_TF_KEY, JSON.stringify(imageTF));
   }, [imageTF]);
 
-// ▼ キャラの“ふわふわ”アニメON/OFF（ステージごと）
-const [imageAnim, setImageAnim] = useState<Record<Stage, boolean>>(() => {
-  try {
-    const raw = localStorage.getItem(PET_IMAGE_ANIM_KEY);
-    return raw ? (JSON.parse(raw) as Record<Stage, boolean>) : { egg:false, child:false, teen:false, adult:false };
-  } catch {
-    return { egg:false, child:false, teen:false, adult:false };
-  }
-});
-useEffect(() => {
-  localStorage.setItem(PET_IMAGE_ANIM_KEY, JSON.stringify(imageAnim));
-}, [imageAnim]);
-
-
   const [bgImage, setBgImage] = useState<string | null>(() => {
   try {
     const raw = localStorage.getItem(PET_BG_KEY);
@@ -1128,14 +1114,15 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
       )}
 
                  {/* キャラ */}
-      {currentImage ? (
+           {currentImage ? (
         <div
-          className={`absolute top-1/2 left-1/2 ${imageAnim[stage] ? "animate-[petBob_2.6s_ease-in-out_infinite]" : ""}`}
+          className="absolute top-1/2 left-1/2 animate-[petBob_2.6s_ease-in-out_infinite]"
           style={{ transform: "translate(-50%, -50%)" }}
         >
-                    <img
-            src={currentImage}
-            alt="pet"
+                      <img
+              src={currentImage}
+              alt="pet"
+
             className="max-w-full max-h-full"
             style={{
               // スライダー値 + ステージごとの基準オフセット
@@ -1144,7 +1131,7 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
               ["--zoom" as any]: tf.zoom,
               position: "relative",
               left: "50%",
-              top: "-10%",
+              top: "50%",
               transform: `translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(var(--zoom))`,
               transformOrigin: "center center",
             } as React.CSSProperties}
@@ -1449,7 +1436,7 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
                       </div>
 
                       {/* 画像の拡大率・位置 */}
-                      <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                           <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                         <label className="flex flex-col gap-1">
                           <span className="opacity-80">拡大率 {imageTF[st].zoom.toFixed(2)}x</span>
                           <input
@@ -1485,17 +1472,8 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
                         </label>
                       </div>
 
-                      {/* 静止画でも“ふわふわ”動かす */}
-                      <label className="mt-2 inline-flex items-center gap-2 text-xs">
-                        <input
-                          type="checkbox"
-                          checked={imageAnim[st] ?? false}
-                          onChange={(e) => setImageAnim(prev => ({ ...prev, [st]: e.target.checked }))}
-                        />
-                        ふわふわ動く（静止画用）
-                      </label>
-
                       <p className="text-xs opacity-70 mt-2">推奨：PNG / 透過背景可（大きめOK・自動で縮小表示）</p>
+
                     </div>
                   </div>
                 ))}
