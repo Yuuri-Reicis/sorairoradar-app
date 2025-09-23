@@ -1026,7 +1026,7 @@ useEffect(() => { saveCommentBank(commentBank); }, [commentBank]);
     setText(item.full);
   }, []);
 
-  const togglePinHistory = useCallback((id: string) => {
+    const togglePinHistory = useCallback((id: string) => {
     setHistory((prev) => {
       const next = prev.map((it) => (it.id === id ? { ...it, pinned: !it.pinned } : it));
       saveHistory(next);
@@ -1036,17 +1036,26 @@ useEffect(() => { saveCommentBank(commentBank); }, [commentBank]);
 
   const deleteHistoryItem = useCallback((id: string) => {
     setHistory((prev) => {
+      const target = prev.find(it => it.id === id);
+      if (target?.pinned) {
+        setToast({ msg: "ピン済みは削除できません（先にピン解除してね）", kind: "warn" });
+        return prev;
+      }
       const next = prev.filter((it) => it.id !== id);
       saveHistory(next);
       return next;
     });
   }, []);
 
-  const clearAllHistory = useCallback(() => {
-    if (!window.confirm("履歴をすべて削除します。よろしいですか？")) return;
-    saveHistory([]);
-    setHistory([]);
+    const clearAllHistory = useCallback(() => {
+    if (!window.confirm("ピン以外の履歴をすべて削除します。よろしいですか？")) return;
+    setHistory((prev) => {
+      const kept = prev.filter((it) => it.pinned);
+      saveHistory(kept);
+      return kept;
+    });
     lastSavedHashRef.current = null;
+    setToast({ msg: "ピン以外の履歴を削除しました", kind: "ok" });
   }, []);
 
   const doExportHistory = useCallback(() => {
@@ -1451,13 +1460,13 @@ useEffect(() => { saveCommentBank(commentBank); }, [commentBank]);
               </div>
             </div>
 
-            <div className="p-3 border-b border-white/10 flex gap-2">
+                        <div className="p-3 border-b border-white/10 flex gap-2">
               <button
                 onClick={clearAllHistory}
                 className="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 transition-colors text-xs flex items-center gap-1"
               >
                 <Trash2 className="w-3 h-3" />
-                全削除
+                ピン以外を全削除
               </button>
               <button
                 onClick={doExportHistory}
