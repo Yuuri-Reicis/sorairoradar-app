@@ -1144,7 +1144,7 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
               ["--zoom" as any]: tf.zoom,
               position: "relative",
               left: "50%",
-              top: "50%",
+              top: "40%",
               transform: `translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(var(--zoom))`,
               transformOrigin: "center center",
             } as React.CSSProperties}
