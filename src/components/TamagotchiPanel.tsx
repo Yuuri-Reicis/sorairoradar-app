@@ -1143,7 +1143,7 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
               ["--ty" as any]: `${tf.y + BASE_OFFSET[stage].y}px`,
               ["--zoom" as any]: tf.zoom,
               position: "relative",
-              left: "20%",
+              left: "50%",
               top: "50%",
               transform: `translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(var(--zoom))`,
               transformOrigin: "center center",
