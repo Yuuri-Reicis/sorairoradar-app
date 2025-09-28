@@ -772,6 +772,11 @@ useEffect(() => {
   } catch { /* 保存失敗時は何もしない */ }
 }, [lines]);
 
+// ▼ ここから追加：カテゴリ or ステージを切り替えたら、保存済みの台詞をテキスト欄へ反映
+useEffect(() => {
+  const arr = (lines[editCat]?.[editStage] ?? DEFAULT_LINES[editCat][editStage]) || [];
+  setEditText(arr.join("\n"));
+}, [editCat, editStage, lines]);
 
 // セリフ選択（候補が2つ以上のときだけ“前回を避ける”）
 const stageKey: keyof NonNullable<PetSave['forms']> | null =
