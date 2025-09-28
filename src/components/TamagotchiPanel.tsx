@@ -1363,9 +1363,7 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
   </button>
 </div>
 
-              <div className="p-4 space-y-4 overflow-y-auto">
-                {/* 背景カード（全ステージ共通） */}
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3 flex items-center gap-3">
+                             <div className="rounded-xl border border-white/10 bg-white/5 p-3 flex items-center gap-3">
                   <div className="w-28 h-20 bg-black/20 border border-white/10 rounded-lg flex items-center justify-center overflow-hidden">
                     {effectiveBg ? (
                       <img src={effectiveBg} className="w-full h-full object-cover" />
@@ -1375,10 +1373,49 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
                   </div>
                   <div className="flex-1">
                     <div className="text-sm mb-2">背景（全段階共通）</div>
-                    <div className="flex items-center gap-2">
-                      {/* …中略（画像設定カード群）… */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      {/* 画像を選ぶ（JPEG圧縮で保存：容量を節約） */}
+                      <label
+                        className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs flex items-center gap-1 cursor-pointer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ImagePlus className="w-3 h-3" />
+                        画像を選ぶ
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => {
+                            const f = e.target.files?.[0] ?? null;
+                            (e.currentTarget as HTMLInputElement).value = "";
+                            void onPickBg(f);
+                          }}
+                        />
+                      </label>
+
+                      {/* 既定に戻す（用意している初期画像へ） */}
+                      {DEFAULT_BG && (
+                        <button
+                          type="button"
+                          className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs"
+                          onClick={() => setBgImage(DEFAULT_BG)}
+                        >
+                          既定に戻す
+                        </button>
+                      )}
+
+                      {/* クリア（背景なし） */}
+                      <button
+                        type="button"
+                        className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs flex items-center gap-1"
+                        onClick={clearBg}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                        クリア
+                      </button>
                     </div>
-                                        <p className="text-xs opacity-70 mt-1">推奨：横長の画像（object-cover で全体に敷き詰め）</p>
+                    <p className="text-xs opacity-70 mt-1">推奨：横長の画像（object-cover で全体に敷き詰め）</p>
                   </div>
                 </div>
 
