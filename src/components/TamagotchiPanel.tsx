@@ -1581,9 +1581,8 @@ const levelPct = Math.round((levelInto / 100) * 100); // %表示用
                 </div>
 
 
-              </div>
-            </aside>
-
+              </aside>
+           
 
                               
 
